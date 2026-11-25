@@ -7,15 +7,28 @@
 </head>
 <body>
     <h2>Fintech Payments</h2>
-    <p id="status">Returning to your desktop application...</p>
+    <p id="status">Checking authorization...</p>
 
     <script>
-        const params = window.location.search;
+        const params = new URLSearchParams(window.location.search);
+        const response = new URLSearchParams();
+
         history.replaceState(null, "", window.location.pathname);
 
-        if (params) {
+        const valid = params.has("state") &&
+            ((params.has("code") && params.has("realmId")) ||
+             params.has("error"));
+
+        if (valid) {
+            for (const key of ["code", "state", "realmId", "error"]) {
+                if (params.has(key)) {
+                    response.set(key, params.get(key));
+                }
+            }
+
             window.location.replace(
-                "http://localhost:8000/callback" + params
+                "http://localhost:8000/callback?" +
+                response.toString()
             );
         } else {
             document.getElementById("status").textContent =
