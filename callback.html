@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="referrer" content="no-referrer">
+    <title>Fintech Payments Authorization</title>
+</head>
+<body>
+    <h2>Fintech Payments</h2>
+    <p id="status">Returning to your desktop application...</p>
+
+    <script>
+        const params = window.location.search;
+        history.replaceState(null, "", window.location.pathname);
+
+        if (params) {
+            window.location.replace(
+                "http://localhost:8000/callback" + params
+            );
+        } else {
+            document.getElementById("status").textContent =
+                "Please connect through the Fintech Payments application.";
+        }
+    </script>
+</body>
+</html>
